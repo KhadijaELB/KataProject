@@ -1,6 +1,7 @@
 # KataProject
 To run the front end part we have to run the command : npm start
-We’ll give an introduction to the development of our app, starting with a basic overview of the game’s functionality. The final application will consist of three screens.
+
+We’ll give an introduction to the development of the app, starting with a basic overview of the game’s functionality. The final application will consist of three screens.
 1- The players information page:
 ![image](https://user-images.githubusercontent.com/34302775/161647675-b8663f7e-65d8-493a-83af-e4d57ce779c2.png)
 
