@@ -19,7 +19,6 @@ class ListGameComponent extends Component {
 
         }
         this.changeGameNameHandler = this.changeGameNameHandler.bind(this);
-        //this.getNamePlayerById(id) = this.getNamePlayerById.bind(this);
     }
     changeGameNameHandler = (event) => {
         this.setState({ gameName: event.target.value });
@@ -33,20 +32,16 @@ class ListGameComponent extends Component {
             res.data.forEach(element => {
                 this.getNamePlayerById(element.firstPlayer, "first");
                 this.getNamePlayerById(element.secondPlayer, "second");
-                //element.firstPlayer=this.state.firstPlayerName.playerName;
-                //console.log("TEst is "+element.firstPlayer);
-            })
+             })
 
             this.setState({ games: res.data });
         });
-        //this.getNamePlayerById(this.props.id);
     }
     getNamePlayerById(id, name) {
         PlayerService.getPlayerById(id).then((result) => {
             console.log("Test " + result.data.playerName);
             if (name === "first") this.setState({ firstPlayerName: result.data });
             else this.setState({ secondPlayerName: result.data });
-            //return result.data.playerName;
         })
             .catch((e) => {
                 console.log(e);
@@ -54,7 +49,6 @@ class ListGameComponent extends Component {
 
     }
     saveGame = (e) => {
-        //const navigate = useNavigate();
         e.preventDefault();
         const firstPlayer = localStorage.getItem("firstPlayer");
         const secondPlayer = localStorage.getItem("secondPlayer");
@@ -71,8 +65,6 @@ class ListGameComponent extends Component {
             const json = JSON.stringify(res);
             localStorage.setItem("Game", json);
             this.props.history.push('/BoardGame');
-            //Redirect();
-
         });
 
     }

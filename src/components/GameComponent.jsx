@@ -19,6 +19,8 @@ class GameComponent extends Component {
             squares: Array(9).fill(null),
             squaresHistory: Array(9).fill(null),
             xIsNext: true,
+            isLastClick: false,
+            gameOver: false
         };
 
     }
@@ -95,7 +97,7 @@ class GameComponent extends Component {
             game: JSON.parse(gameStorage).data.id,
         };
         MoveService.createMove(moveToSave).then(res => {
-            //window.location.reload(false);
+            window.location.reload(false);
         });
         //this.props.onToggleX(this.state.xIsNext);
     }
@@ -139,7 +141,14 @@ class GameComponent extends Component {
                 }
             }
         }
-        return null;
+        if(this.state.isLastClick){
+            let gameUpdated= this.getGameUpdated("FINISHED");
+                    GameService.updateStateGame(gameUpdated, JSON.parse(localStorage.getItem("Game")).data.id).then(res => {
+                    });
+                    this.state.gameOver= true;
+            return null;
+        }
+        else return null;
     }
     renderSquare(i) {
         return (
@@ -150,11 +159,14 @@ class GameComponent extends Component {
             />
         );
     }
-
+    /*ReturnPreviousPage(){
+        this.props.history.push('/ListGames');
+    }*/
     componentDidMount() {
         let gameLs = localStorage.getItem("Game");
         MoveService.getListMove(JSON.parse(gameLs).data.id).then((res) => {
             this.setState({ moves: res.data });
+            if (res.data.length === 9) this.state.isLastClick =true;
             res.data.forEach(element => {
                 if (element.boardRow === 1 && element.boardColumn === 1) { this.handleClickAfterRefresh(0); }
                 else if (element.boardRow === 1 && element.boardColumn === 2) { this.handleClickAfterRefresh(1); }
@@ -192,7 +204,7 @@ class GameComponent extends Component {
         if (winner) {
             status = 'Winner: ' + winner;
         } else {
-            status = 'Next player: ' + (this.state.xIsNext ? JSON.parse(localStorage.getItem("firstPlayer")).data.playerName : JSON.parse(localStorage.getItem("secondPlayer")).data.playerName);
+            status = (this.state.gameOver? 'Game over no one win' : 'Next player: ' + (this.state.xIsNext ? JSON.parse(localStorage.getItem("firstPlayer")).data.playerName : JSON.parse(localStorage.getItem("secondPlayer")).data.playerName));
         }
         return (
 
